@@ -1,0 +1,11 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/kuzakiza/library.kuzakizazi.com/
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/rsync -av --delete \
+        --exclude ".git/" \
+        --exclude ".cpanel.yml" \
+        --exclude ".env" \
+        --exclude "storage/" \
+        --exclude "vendor/" \
+        $PWD/ $DEPLOYPATH
