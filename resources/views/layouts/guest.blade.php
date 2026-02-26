@@ -20,14 +20,24 @@
 
 <body class="font-sans text-gray-900 antialiased">
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-        <div style="width: 80px; height: 80px;">
+        <div class="mb-4">
             <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <x-application-logo class="h-24 w-auto" />
             </a>
         </div>
 
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             {{ $slot }}
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center">
+            <p class="text-gray-600 font-semibold text-sm mb-1">Kuza Kizazi 3.1</p>
+            <p class="text-gray-500 text-xs text-center">
+                © 2018 - 2026 
+                <a href="https://kuzakizazi.com" class="text-blue-600 hover:text-blue-800 transition" target="_blank">Kuza Kizazi Kreative</a> 
+                All rights reserved.
+            </p>
         </div>
     </div>
 </body>

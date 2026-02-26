@@ -12,6 +12,11 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    public function recommendations()
+    {
+        return $this->hasMany(Recommendation::class , 'student_id');
+    }
+
     public function readingProgress()
     {
         return $this->hasMany(ReadingProgress::class);
@@ -28,7 +33,7 @@ class User extends Authenticatable
     // Get all books the student has interacted with
     public function books()
     {
-        return $this->belongsToMany(Book::class, 'reading_progress')
+        return $this->belongsToMany(Book::class , 'reading_progress')
             ->withPivot('current_page', 'percentage', 'is_completed');
     }
 
@@ -43,7 +48,13 @@ class User extends Authenticatable
         'password',
         'role',
         'student_id',
+        'grade_id',
     ];
+
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

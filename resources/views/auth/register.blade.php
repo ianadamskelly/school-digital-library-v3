@@ -38,6 +38,21 @@
                 <x-input-error :messages="$errors->get('student_id')" class="mt-2" />
             </div>
 
+            <!-- Grade (Student) -->
+            <div class="mt-4" x-show="role === 'student'">
+                <x-input-label for="grade_id" :value="__('Grade/Class')" />
+                <select id="grade_id" name="grade_id" x-bind:required="role === 'student'"
+                    class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                    <option value="">{{ __('Select Grade') }}</option>
+                    @foreach($grades as $grade)
+                        <option value="{{ $grade->id }}" {{ old('grade_id') == $grade->id ? 'selected' : '' }}>
+                            {{ $grade->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <x-input-error :messages="$errors->get('grade_id')" class="mt-2" />
+            </div>
+
             <!-- Password -->
             <div class="mt-4">
                 <x-input-label for="password" :value="__('Password')" />

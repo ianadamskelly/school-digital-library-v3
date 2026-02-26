@@ -113,37 +113,96 @@
                     </div>
                 </div>
 
-                <!-- Quick Upload placeholder -->
-                <div class="space-y-8">
-                    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm h-fit">
-                        <h3 class="text-lg font-bold mb-4 text-gray-800">Student Progress</h3>
-                        <div class="space-y-2">
-                            @foreach($students as $student)
-                                <a href="{{ route('teacher.students.progress', $student->id) }}"
-                                    class="flex items-center justify-between p-3 rounded-2xl hover:bg-blue-50 transition group">
-                                    <div class="flex items-center space-x-3">
-                                        <div
-                                            class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xs uppercase">
-                                            {{ substr($student->name, 0, 2) }}
+                <!-- Sidebar Sections -->
+                <div class="space-y-6" x-data="{ 
+                    showAllStudents: false, 
+                    showStudentProgress: true, 
+                    showAddBooks: false 
+                }">
+                    <!-- Student Progress (Assigned Books) -->
+                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden h-fit">
+                        <button @click="showStudentProgress = !showStudentProgress" class="w-full flex items-center justify-between p-6 focus:outline-none">
+                            <h3 class="text-lg font-bold text-gray-800">Student's Progress</h3>
+                            <svg class="w-5 h-5 text-gray-400 transition-transform duration-200" :class="{'rotate-180': showStudentProgress}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        
+                        <div x-show="showStudentProgress" x-collapse x-cloak class="px-6 pb-6">
+                            <p class="text-xs text-gray-500 mb-4">Students you have assigned books.</p>
+                            <div class="space-y-2">
+                                @forelse($studentsWithRecommendations as $student)
+                                    <a href="{{ route('teacher.students.progress', $student->id) }}"
+                                        class="flex items-center justify-between p-3 rounded-2xl hover:bg-blue-50 transition group">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-8 h-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center font-bold text-xs uppercase">
+                                                {{ substr($student->name, 0, 2) }}
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-bold text-gray-700 group-hover:text-blue-600 truncate max-w-[120px]">{{ $student->name }}</div>
+                                                @if($student->grade)
+                                                    <span class="text-[10px] text-gray-400 uppercase">{{ $student->grade->name }}</span>
+                                                @endif
+                                            </div>
                                         </div>
-                                        <span
-                                            class="text-sm font-bold text-gray-700 group-hover:text-blue-600 truncate max-w-[120px]">{{ $student->name }}</span>
-                                    </div>
-                                    <svg class="w-4 h-4 text-gray-300 group-hover:text-blue-400 transition" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </a>
-                            @endforeach
+                                        <svg class="w-4 h-4 text-gray-300 group-hover:text-blue-400 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </a>
+                                @empty
+                                    <p class="text-sm text-gray-400 italic py-2">No students with assigned books yet.</p>
+                                @endforelse
+                            </div>
                         </div>
                     </div>
 
-                    <div class="bg-gray-50 p-6 rounded-3xl border-2 border-dashed border-gray-200 h-fit">
-                        <h3 class="text-lg font-bold mb-4">Add More Books</h3>
-                        <p class="text-gray-500 text-sm mb-6">Want to expand the library? You can upload new PDFs here.
-                        </p>
-                        @include('teacher.upload')
+                    <!-- All Students -->
+                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden h-fit">
+                        <button @click="showAllStudents = !showAllStudents" class="w-full flex items-center justify-between p-6 focus:outline-none">
+                            <h3 class="text-lg font-bold text-gray-800">All Students</h3>
+                            <svg class="w-5 h-5 text-gray-400 transition-transform duration-200" :class="{'rotate-180': showAllStudents}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        
+                        <div x-show="showAllStudents" x-collapse x-cloak class="px-6 pb-6">
+                            <div class="space-y-2 max-h-80 overflow-y-auto pr-1 custom-scrollbar">
+                                @foreach($allStudents as $student)
+                                    <a href="{{ route('teacher.students.progress', $student->id) }}"
+                                        class="flex items-center justify-between p-3 rounded-2xl hover:bg-blue-50 transition group">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xs uppercase">
+                                                {{ substr($student->name, 0, 2) }}
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-bold text-gray-700 group-hover:text-blue-600 truncate max-w-[120px]">{{ $student->name }}</div>
+                                                @if($student->grade)
+                                                    <span class="text-[10px] text-gray-400 uppercase">{{ $student->grade->name }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <svg class="w-4 h-4 text-gray-300 group-hover:text-blue-400 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add More Books Section -->
+                    <div class="bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 h-fit overflow-hidden">
+                        <button @click="showAddBooks = !showAddBooks" class="w-full flex items-center justify-between p-6 focus:outline-none">
+                            <h3 class="text-lg font-bold text-gray-800 text-left">Add More Books</h3>
+                            <svg class="w-5 h-5 text-gray-400 transition-transform duration-200" :class="{'rotate-180': showAddBooks}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+
+                        <div x-show="showAddBooks" x-collapse x-cloak class="px-6 pb-6">
+                            <p class="text-gray-500 text-xs mb-6">Want to expand the library? You can upload new PDFs here.</p>
+                            @include('teacher.upload')
+                        </div>
                     </div>
                 </div>
 
@@ -167,8 +226,11 @@
                     <select name="student_id"
                         class="w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500" required>
                         <option value="">-- Choose a student --</option>
-                        @foreach($students as $student)
-                            <option value="{{ $student->id }}">{{ $student->name }} ({{ $student->student_id }})</option>
+                        @foreach($allStudents as $student)
+                            <option value="{{ $student->id }}">
+                                {{ $student->name }} ({{ $student->student_id }}) 
+                                @if($student->grade)— {{ $student->grade->name }} @endif
+                            </option>
                         @endforeach
                     </select>
                 </div>

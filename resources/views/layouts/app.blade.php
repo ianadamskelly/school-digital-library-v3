@@ -29,7 +29,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-gray-100 flex flex-col">
         @include('layouts.navigation')
 
         <!-- Page Heading -->
@@ -42,9 +42,21 @@
         @endisset
 
         <!-- Page Content -->
-        <main>
+        <main class="flex-grow">
             {{ $slot }}
         </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 py-6 mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-gray-600 font-semibold text-sm mb-1">Kuza Kizazi 3.1</p>
+                <p class="text-gray-500 text-xs">
+                    © 2018 - 2026 
+                    <a href="https://kuzakizazi.com" class="text-blue-600 hover:text-blue-800 transition" target="_blank">Kuza Kizazi Kreative</a> 
+                    All rights reserved.
+                </p>
+            </div>
+        </footer>
     </div>
 </body>
 

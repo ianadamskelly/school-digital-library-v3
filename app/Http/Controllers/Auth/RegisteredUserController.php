@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Grade;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,7 +20,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $grades = Grade::all();
+        return view('auth.register', compact('grades'));
     }
 
     /**
@@ -34,6 +36,7 @@ class RegisteredUserController extends Controller
             'role' => ['required', 'in:teacher,student'],
             'email' => ['nullable', 'required_if:role,teacher', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'student_id' => ['nullable', 'required_if:role,student', 'string', 'max:255', 'unique:' . User::class],
+            'grade_id' => ['nullable', 'required_if:role,student', 'exists:grades,id'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -41,6 +44,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'student_id' => $request->student_id,
+            'grade_id' => $request->grade_id,
             'role' => $request->role,
             'password' => Hash::make($request->password),
         ]);

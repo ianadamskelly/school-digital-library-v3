@@ -42,17 +42,10 @@
 <body class="bg-gray-50 text-gray-900 overflow-x-hidden">
     <!-- Navbar -->
     <nav class="fixed w-full z-50 p-6 flex justify-between items-center transition-all duration-300" id="navbar">
-        <div class="flex items-center space-x-2">
-            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg"
-                style="width: 40px; height: 40px;">
-                <svg class="w-6 h-6" width="24" height="24" style="width: 24px; height: 24px;" fill="none"
-                    stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-                    </path>
-                </svg>
-            </div>
-            <span class="text-xl font-bold tracking-tight text-white drop-shadow-md">Digital Library</span>
+        <div class="flex items-center">
+            <a href="/">
+                <x-application-logo class="h-12 w-auto" />
+            </a>
         </div>
         <div class="space-x-4 flex items-center">
             <button id="pwa-install-btn" style="display: none;"
@@ -155,8 +148,13 @@
             Your Account</a>
     </section>
 
-    <footer class="py-12 px-6 border-t border-gray-200 text-center text-gray-400">
-        <p>&copy; 2026 Digital School Library. Built for the next generation of readers.</p>
+    <footer class="py-12 px-6 border-t border-gray-200 text-center">
+        <p class="text-gray-600 font-semibold mb-2">Kuza Kizazi 3.1</p>
+        <p class="text-gray-500 text-sm">
+            © 2018 - 2026 
+            <a href="https://kuzakizazi.com" class="text-blue-600 hover:text-blue-800 transition" target="_blank">Kuza Kizazi Kreative</a> 
+            All rights reserved.
+        </p>
     </footer>
 
     <script>

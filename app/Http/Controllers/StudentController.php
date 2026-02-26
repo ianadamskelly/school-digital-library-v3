@@ -34,21 +34,23 @@ class StudentController extends Controller
         // Fetch some recommended books with filtering
         $search = $request->input('search');
         $categoryId = $request->input('category_id');
-        $gradeId = $request->input('grade_id');
+        $gradeId = $request->input('grade_id', $user->grade_id);
 
         $recommendedBooks = \App\Models\Book::when($search, function ($query, $search) {
             return $query->where(function ($q) use ($search) {
-                $q->where('title', 'LIKE', "%{$search}%")
-                    ->orWhere('author', 'LIKE', "%{$search}%");
-            });
-        })
-            ->when($categoryId, function ($query, $categoryId) {
-                return $query->where('category_id', $categoryId);
+                    $q->where('title', 'LIKE', "%{$search}%")
+                        ->orWhere('author', 'LIKE', "%{$search}%");
+                }
+                );
             })
+            ->when($categoryId, function ($query, $categoryId) {
+            return $query->where('category_id', $categoryId);
+        })
             ->when($gradeId, function ($query, $gradeId) {
-                return $query->whereHas('grades', function ($q) use ($gradeId) {
+            return $query->whereHas('grades', function ($q) use ($gradeId) {
                     $q->where('grades.id', $gradeId);
-                });
+                }
+                );
             })
             ->get();
 
@@ -62,8 +64,8 @@ class StudentController extends Controller
     {
         // Find or create a progress record for this student/book
         $progress = ReadingProgress::firstOrCreate(
-            ['user_id' => auth()->id(), 'book_id' => $book->id],
-            ['current_page' => 1]
+        ['user_id' => auth()->id(), 'book_id' => $book->id],
+        ['current_page' => 1]
         );
 
         return view('student.reader', compact('book', 'progress'));

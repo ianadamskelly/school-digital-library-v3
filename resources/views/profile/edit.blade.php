@@ -13,6 +13,14 @@
                 </div>
             </div>
 
+            @if(auth()->user()->role === 'teacher')
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg border-2 border-blue-50 border-dashed">
+                    <div class="max-w-xl">
+                        @include('profile.partials.add-student-form')
+                    </div>
+                </div>
+            @endif
+
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     @include('profile.partials.update-password-form')
