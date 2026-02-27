@@ -41,25 +41,25 @@
 
 <body class="bg-gray-50 text-gray-900 overflow-x-hidden">
     <!-- Navbar -->
-    <nav class="fixed w-full z-50 p-6 flex justify-between items-center transition-all duration-300" id="navbar">
+    <nav class="fixed w-full z-50 p-4 lg:p-6 flex justify-between items-center transition-all duration-300" id="navbar">
         <div class="flex items-center">
             <a href="/">
-                <x-application-logo class="h-12 w-auto" />
+                <x-application-logo class="h-8 md:h-10 lg:h-12 w-auto" />
             </a>
         </div>
-        <div class="space-x-4 flex items-center">
+        <div class="space-x-2 lg:space-x-4 flex items-center">
             <button id="pwa-install-btn" style="display: none;"
-                class="px-4 py-2 bg-green-600 text-white rounded-full font-semibold hover:bg-green-700 transition shadow-lg text-sm">
+                class="px-3 py-1.5 lg:px-4 lg:py-2 bg-green-600 text-white rounded-full font-semibold hover:bg-green-700 transition shadow-lg text-xs lg:text-sm">
                 Install App
             </button>
             @auth
                 <a href="{{ url('/dashboard') }}"
-                    class="px-6 py-2 bg-white text-blue-900 rounded-full font-semibold hover:bg-gray-100 transition shadow-lg">Dashboard</a>
+                    class="px-4 py-2 lg:px-6 bg-white text-blue-900 rounded-full font-semibold hover:bg-gray-100 transition shadow-lg text-sm lg:text-base">Dashboard</a>
             @else
-                <a href="{{ route('login') }}" class="text-white font-medium hover:text-blue-200 transition">Log in</a>
+                <a href="{{ route('login') }}" class="text-white font-medium hover:text-blue-200 transition text-sm lg:text-base">Log in</a>
                 @if (Route::has('register'))
                     <a href="{{ route('register') }}"
-                        class="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition shadow-lg border border-blue-400">Join
+                        class="px-4 py-2 lg:px-6 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition shadow-lg border border-blue-400 text-sm lg:text-base">Join
                         Now</a>
                 @endif
             @endauth
@@ -67,24 +67,24 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="h-screen hero-gradient flex items-center justify-center p-6 lg:p-20 relative">
+    <section class="min-h-screen py-32 lg:py-0 hero-gradient flex items-center justify-center p-6 lg:p-20 relative">
         <div class="max-w-4xl text-center text-white space-y-6 animate-fade-in-up">
-            <h1 class="text-5xl lg:text-7xl font-bold leading-tight">Ignite the Joy of Reading in Every Child</h1>
-            <p class="text-xl text-blue-100 max-w-2xl mx-auto">Explore thousands of stories, learn with high-quality AI
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">Ignite the Joy of Reading in Every Child</h1>
+            <p class="text-lg lg:text-xl text-blue-100 max-w-2xl mx-auto">Explore thousands of stories, learn with high-quality AI
                 narration, and track your progress in a magical digital world.</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4 pt-6">
                 <a href="{{ route('register') }}"
-                    class="px-10 py-4 bg-white text-blue-900 rounded-full text-lg font-bold hover:scale-105 transition-all shadow-xl">Get
+                    class="px-8 py-3 lg:px-10 lg:py-4 bg-white text-blue-900 rounded-full text-base lg:text-lg font-bold hover:scale-105 transition-all shadow-xl">Get
                     Started for Free</a>
                 <a href="#features"
-                    class="px-10 py-4 glass text-white rounded-full text-lg font-bold hover:bg-white/20 transition-all">Learn
+                    class="px-8 py-3 lg:px-10 lg:py-4 glass text-white rounded-full text-base lg:text-lg font-bold hover:bg-white/20 transition-all">Learn
                     More</a>
             </div>
         </div>
 
         <!-- Animated Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-70">
-            <svg class="w-6 h-6 text-white" width="24" height="24" style="width: 24px; height: 24px;" fill="none"
+        <div class="absolute bottom-6 lg:bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-70">
+            <svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none"
                 stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3">
                 </path>
@@ -93,9 +93,9 @@
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="py-24 px-6 lg:px-20 bg-white">
-        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div class="p-8 rounded-3xl bg-blue-50 space-y-4 hover:shadow-2xl transition duration-500">
+    <section id="features" class="py-16 lg:py-24 px-6 lg:px-20 bg-white">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            <div class="p-6 lg:p-8 rounded-3xl bg-blue-50 space-y-4 hover:shadow-2xl transition duration-500">
                 <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white"
                     style="width: 56px; height: 56px;">
                     <svg class="w-8 h-8" width="32" height="32" style="width: 32px; height: 32px;" fill="none"
@@ -109,7 +109,7 @@
                 <p class="text-gray-600">Our smart AI narrators bring stories to life, helping kids improve their
                     vocabulary and listening skills.</p>
             </div>
-            <div class="p-8 rounded-3xl bg-indigo-50 space-y-4 hover:shadow-2xl transition duration-500">
+            <div class="p-6 lg:p-8 rounded-3xl bg-indigo-50 space-y-4 hover:shadow-2xl transition duration-500">
                 <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white"
                     style="width: 56px; height: 56px;">
                     <svg class="w-8 h-8" width="32" height="32" style="width: 32px; height: 32px;" fill="none"
@@ -123,7 +123,7 @@
                 <p class="text-gray-600">Teachers and parents can see exactly how many books their little ones have
                     finished this year.</p>
             </div>
-            <div class="p-8 rounded-3xl bg-purple-50 space-y-4 hover:shadow-2xl transition duration-500">
+            <div class="p-6 lg:p-8 rounded-3xl bg-purple-50 space-y-4 hover:shadow-2xl transition duration-500">
                 <div class="w-14 h-14 bg-purple-600 rounded-2xl flex items-center justify-center text-white"
                     style="width: 56px; height: 56px;">
                     <svg class="w-8 h-8" width="32" height="32" style="width: 32px; height: 32px;" fill="none"
@@ -148,9 +148,9 @@
             Your Account</a>
     </section>
 
-    <footer class="py-12 px-6 border-t border-gray-200 text-center">
-        <p class="text-gray-600 font-semibold mb-2">Kuza Kizazi 3.1</p>
-        <p class="text-gray-500 text-sm">
+    <footer class="py-8 lg:py-12 px-6 border-t border-gray-200 text-center">
+        <p class="text-gray-600 font-semibold mb-2 text-sm lg:text-base">Kuza Kizazi 3.1</p>
+        <p class="text-gray-500 text-xs text-center px-4">
             © 2018 - 2026 
             <a href="https://kuzakizazi.com" class="text-blue-600 hover:text-blue-800 transition" target="_blank">Kuza Kizazi Kreative</a> 
             All rights reserved.

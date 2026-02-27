@@ -19,10 +19,10 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 px-4">
         <div class="mb-4">
             <a href="/">
-                <x-application-logo class="h-24 w-auto" />
+                <x-application-logo class="h-16 lg:h-24 w-auto" />
             </a>
         </div>
 
@@ -31,9 +31,9 @@
         </div>
 
         <!-- Footer -->
-        <div class="mt-8 text-center">
-            <p class="text-gray-600 font-semibold text-sm mb-1">Kuza Kizazi 3.1</p>
-            <p class="text-gray-500 text-xs text-center">
+        <div class="mt-8 text-center pb-8">
+            <p class="text-gray-600 font-semibold text-xs lg:text-sm mb-1">Kuza Kizazi 3.1</p>
+            <p class="text-gray-500 text-[10px] lg:text-xs text-center px-4">
                 © 2018 - 2026 
                 <a href="https://kuzakizazi.com" class="text-blue-600 hover:text-blue-800 transition" target="_blank">Kuza Kizazi Kreative</a> 
                 All rights reserved.

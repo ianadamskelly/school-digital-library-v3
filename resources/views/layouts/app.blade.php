@@ -49,8 +49,8 @@
         <!-- Footer -->
         <footer class="bg-white border-t border-gray-200 py-6 mt-auto">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <p class="text-gray-600 font-semibold text-sm mb-1">Kuza Kizazi 3.1</p>
-                <p class="text-gray-500 text-xs">
+                <p class="text-gray-600 font-semibold text-xs lg:text-sm mb-1">Kuza Kizazi 3.1</p>
+                <p class="text-gray-500 text-[10px] lg:text-xs">
                     © 2018 - 2026 
                     <a href="https://kuzakizazi.com" class="text-blue-600 hover:text-blue-800 transition" target="_blank">Kuza Kizazi Kreative</a> 
                     All rights reserved.

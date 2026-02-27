@@ -18,7 +18,7 @@
 
                 <!-- Books List -->
                 <div class="md:col-span-2 space-y-6">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-4 sm:px-0">
                         <h3 class="text-xl font-bold text-gray-800">Available Books</h3>
 
                         <!-- Filters Form -->
@@ -65,34 +65,34 @@
                             @endif
                         </form>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 px-4 sm:px-0">
                         @foreach($books as $book)
                             <div
                                 class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                                <div class="p-6">
-                                    <h4 class="font-bold text-lg mb-1">{{ $book->title }}</h4>
-                                    <p class="text-xs text-gray-500 mb-1">{{ $book->author }} • {{ $book->total_pages }}
+                                <div class="p-5 lg:p-6">
+                                    <h4 class="font-bold text-base lg:text-lg mb-1 line-clamp-1">{{ $book->title }}</h4>
+                                    <p class="text-[10px] lg:text-xs text-gray-500 mb-1">{{ $book->author }} • {{ $book->total_pages }}
                                         pages</p>
                                     <div class="flex flex-wrap gap-1 mb-4">
                                         @if($book->category)
                                             <span
-                                                class="bg-blue-50 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase">{{ $book->category->name }}</span>
+                                                class="bg-blue-50 text-blue-600 text-[9px] lg:text-[10px] font-bold px-2 py-0.5 rounded uppercase">{{ $book->category->name }}</span>
                                         @endif
                                         @foreach($book->grades as $grade)
                                             <span
-                                                class="bg-gray-100 text-gray-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase">{{ $grade->name }}</span>
+                                                class="bg-gray-100 text-gray-600 text-[9px] lg:text-[10px] font-bold px-2 py-0.5 rounded uppercase">{{ $grade->name }}</span>
                                         @endforeach
                                     </div>
 
                                     <div class="space-y-2">
                                         <button
                                             onclick="openRecommendModal({{ $book->id }}, '{{ addslashes($book->title) }}')"
-                                            class="w-full bg-blue-600 text-white py-2 rounded-xl font-bold hover:bg-blue-700 transition flex items-center justify-center shadow-sm">
+                                            class="w-full bg-blue-600 text-white py-2 lg:py-2.5 rounded-xl font-bold hover:bg-blue-700 transition flex items-center justify-center shadow-sm text-sm lg:text-base">
                                             Recommend
                                         </button>
                                         <div class="flex space-x-2">
                                             <a href="{{ route('reader', $book->id) }}" target="_blank"
-                                                class="flex-1 bg-green-50 text-green-700 py-2 rounded-xl font-bold hover:bg-green-100 transition text-center text-sm">
+                                                class="flex-1 bg-green-50 text-green-700 py-2 rounded-xl font-bold hover:bg-green-100 transition text-center text-xs lg:text-sm">
                                                 Read
                                             </a>
                                             <form action="{{ route('books.destroy', $book->id) }}" method="POST"
@@ -101,7 +101,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
-                                                    class="w-full bg-red-50 text-red-700 py-2 rounded-xl font-bold hover:bg-red-100 transition text-sm">
+                                                    class="w-full bg-red-50 text-red-700 py-2 rounded-xl font-bold hover:bg-red-100 transition text-xs lg:text-sm">
                                                     Delete
                                                 </button>
                                             </form>
@@ -212,19 +212,19 @@
 
     <!-- Recommendation Modal -->
     <div id="recommend-modal"
-        class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl transform transition-all">
-            <h3 class="text-2xl font-bold mb-2">Recommend Book</h3>
-            <p id="modal-book-title" class="text-blue-600 font-semibold mb-6"></p>
+        class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 lg:p-8 shadow-2xl transform transition-all">
+            <h3 class="text-xl lg:text-2xl font-bold mb-2">Recommend Book</h3>
+            <p id="modal-book-title" class="text-blue-600 font-semibold mb-6 text-sm lg:text-base"></p>
 
             <form action="{{ route('recommendations.store') }}" method="POST" class="space-y-4">
                 @csrf
                 <input type="hidden" name="book_id" id="modal-book-id">
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Select Student</label>
+                    <label class="block text-xs lg:text-sm font-medium text-gray-700 mb-1">Select Student</label>
                     <select name="student_id"
-                        class="w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500" required>
+                        class="w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-sm" required>
                         <option value="">-- Choose a student --</option>
                         @foreach($allStudents as $student)
                             <option value="{{ $student->id }}">
@@ -236,18 +236,17 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Personal Note (Optional)</label>
+                    <label class="block text-xs lg:text-sm font-medium text-gray-700 mb-1">Personal Note (Optional)</label>
                     <textarea name="note" rows="3"
-                        class="w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                        class="w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-sm"
                         placeholder="e.g. Read this before Friday!"></textarea>
                 </div>
 
-                <div class="flex space-x-3 pt-4">
+                <div class="flex gap-3 pt-4">
                     <button type="button" onclick="closeRecommendModal()"
-                        class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">Cancel</button>
+                        class="flex-1 bg-gray-100 text-gray-700 py-2.5 lg:py-3 rounded-xl font-semibold hover:bg-gray-200 transition text-sm lg:text-base">Cancel</button>
                     <button type="submit"
-                        class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition">Send
-                        Recommendation</button>
+                        class="flex-1 bg-blue-600 text-white py-2.5 lg:py-3 rounded-xl font-semibold hover:bg-blue-700 transition text-sm lg:text-base shadow-lg shadow-blue-200">Send</button>
                 </div>
             </form>
         </div>

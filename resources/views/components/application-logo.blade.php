@@ -1,1 +1,1 @@
-<img src="{{ asset('logo.png') }}" {{ $attributes }} style="max-height: 120px; width: auto; object-fit: contain;">
+<img src="{{ asset('logo.png') }}" {{ $attributes->merge(['class' => 'h-12 w-auto', 'style' => 'object-fit: contain;']) }}>

@@ -3,24 +3,24 @@
         <h1 class="text-2xl font-bold mb-6 text-gray-800">Welcome back, {{ auth()->user()->name }}!</h1>
 
         <!-- Stats Card -->
-        <div class="bg-blue-600 p-6 rounded-3xl mb-8 flex justify-between items-center text-white shadow-lg">
-            <div>
-                <h2 class="text-lg font-semibold opacity-90">Your Reading Journey ({{ now()->year }})</h2>
-                <p class="text-3xl font-bold mt-1">You've finished {{ $completedBooksCount }} books! 🏆</p>
-                <p class="text-sm opacity-80 mt-2">Keep it up, you're doing great!</p>
+        <div class="bg-blue-600 p-6 lg:p-8 rounded-3xl mb-8 flex flex-col sm:flex-row justify-between items-center text-white shadow-lg relative overflow-hidden">
+            <div class="relative z-10 text-center sm:text-left">
+                <h2 class="text-base lg:text-lg font-semibold opacity-90">Your Reading Journey ({{ now()->year }})</h2>
+                <p class="text-2xl lg:text-3xl font-bold mt-1">You've finished {{ $completedBooksCount }} books! 🏆</p>
+                <p class="text-xs lg:text-sm opacity-80 mt-2">Keep it up, you're doing great!</p>
             </div>
-            <div class="text-6xl font-bold opacity-20">📚</div>
+            <div class="text-5xl lg:text-6xl font-bold opacity-20 mt-4 sm:mt-0">📚</div>
         </div>
 
         <!-- Teacher's Picks / Recommendations -->
         @if($recommendations->count() > 0)
             <section class="mb-10">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold text-gray-800 flex items-center">
-                        Teacher's Picks <span class="ml-2 text-2xl">🌟</span>
+                    <h3 class="text-lg lg:text-xl font-bold text-gray-800 flex items-center">
+                        Teacher's Picks <span class="ml-2 text-xl lg:text-2xl">🌟</span>
                     </h3>
                     <span
-                        class="bg-yellow-400 text-yellow-900 text-xs font-black px-2 py-1 rounded-full uppercase tracking-tighter">New</span>
+                        class="bg-yellow-400 text-yellow-900 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter">New</span>
                 </div>
 
                 <div class="flex space-x-6 overflow-x-auto pb-6 -mx-2 px-2 scrollbar-hide">
@@ -131,7 +131,7 @@
                 @endif
             </form>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 lg:gap-6">
             @foreach($recommendedBooks as $book)
                 <div
                     class="bg-white rounded-3xl shadow-sm border border-gray-50 hover:shadow-lg transition p-3 flex flex-col items-center group">
@@ -139,18 +139,18 @@
                         class="w-full aspect-[2/3] bg-gray-100 rounded-2xl mb-3 overflow-hidden shadow-sm group-hover:scale-105 transition duration-300">
                         <img src="{{ $book->cover_url }}" class="w-full h-full object-cover">
                     </div>
-                    <h4 class="font-bold text-[10px] text-center text-gray-800 h-6 overflow-hidden line-clamp-2 mb-1">
+                    <h4 class="font-bold text-[10px] lg:text-sm text-center text-gray-800 h-8 lg:h-10 overflow-hidden line-clamp-2 mb-1 px-1">
                         {{ $book->title }}</h4>
                     <div class="flex flex-wrap justify-center gap-1 mb-3">
                         @if($book->category)
-                            <span class="bg-blue-50 text-blue-600 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">{{ $book->category->name }}</span>
+                            <span class="bg-blue-50 text-blue-600 text-[8px] lg:text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">{{ $book->category->name }}</span>
                         @endif
                         @foreach($book->grades as $grade)
-                            <span class="bg-gray-100 text-gray-600 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">{{ $grade->name }}</span>
+                            <span class="bg-gray-100 text-gray-600 text-[8px] lg:text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">{{ $grade->name }}</span>
                         @endforeach
                     </div>
                     <a href="{{ route('reader', $book->id) }}"
-                        class="w-full bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white text-[10px] font-black py-2 rounded-xl transition text-center uppercase tracking-tighter">
+                        class="w-full bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white text-[10px] lg:text-xs font-black py-2 rounded-xl transition text-center uppercase tracking-tighter">
                         Open Book
                     </a>
                 </div>
