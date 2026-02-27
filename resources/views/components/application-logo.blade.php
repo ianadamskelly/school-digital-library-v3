@@ -1,0 +1,1 @@
+<img src="{{ asset('logo.png') }}" {{ $attributes->merge(['class' => 'h-12 w-auto', 'style' => 'object-fit: contain;']) }}>

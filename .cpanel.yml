@@ -1,0 +1,6 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/kuzakiza/library.kuzakizazi.com/
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/cp -R app bootstrap config database resources routes tests artisan composer.json composer.lock package.json vite.config.* phpunit.xml $DEPLOYPATH 2>/dev/null || true
+    - /bin/cp -R public $DEPLOYPATH
