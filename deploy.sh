@@ -10,9 +10,16 @@ php artisan optimize:clear
 echo "📦 Building assets with Vite..."
 npm run build
 
-# Optimize for production
-echo "⚡ Optimizing for production..."
-php artisan optimize
+# Remove hot file if it exists (prevents local dev server links in production)
+echo "🔥 Removing Vite hot file..."
+rm -f public/hot
+
+# Clear caches and optimize
+echo "🧹 Clearing and optimizing caches..."
+php artisan optimize:clear
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
 
 echo "✅ Deployment package ready!"
 echo "Next steps:"
