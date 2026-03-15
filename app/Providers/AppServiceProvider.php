@@ -22,7 +22,6 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') === 'production') {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
-
         try {
             \Illuminate\Support\Facades\Storage::extend('google', function ($app, $config) {
                 $options = [];

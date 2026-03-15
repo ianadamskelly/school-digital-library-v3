@@ -14,12 +14,9 @@ npm run build
 echo "🔥 Removing Vite hot file..."
 rm -f public/hot
 
-# Clear caches and optimize
-echo "🧹 Clearing and optimizing caches..."
-php artisan optimize:clear
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+# Optimize for production
+echo "⚡ Optimizing for production..."
+php artisan optimize
 
 echo "✅ Deployment package ready!"
 echo "Next steps:"
