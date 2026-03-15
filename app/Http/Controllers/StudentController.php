@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\ReadingProgress;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
@@ -38,16 +38,16 @@ class StudentController extends Controller
 
         $recommendedBooks = \App\Models\Book::when($search, function ($query, $search) {
             return $query->where(function ($q) use ($search) {
-                    $q->where('title', 'LIKE', "%{$search}%")
-                        ->orWhere('author', 'LIKE', "%{$search}%");
-                }
-                );
-            })
-            ->when($categoryId, function ($query, $categoryId) {
-            return $query->where('category_id', $categoryId);
+                $q->where('title', 'LIKE', "%{$search}%")
+                    ->orWhere('author', 'LIKE', "%{$search}%");
+            }
+            );
         })
+            ->when($categoryId, function ($query, $categoryId) {
+                return $query->where('category_id', $categoryId);
+            })
             ->when($gradeId, function ($query, $gradeId) {
-            return $query->whereHas('grades', function ($q) use ($gradeId) {
+                return $query->whereHas('grades', function ($q) use ($gradeId) {
                     $q->where('grades.id', $gradeId);
                 }
                 );
@@ -64,8 +64,8 @@ class StudentController extends Controller
     {
         // Find or create a progress record for this student/book
         $progress = ReadingProgress::firstOrCreate(
-        ['user_id' => auth()->id(), 'book_id' => $book->id],
-        ['current_page' => 1]
+            ['user_id' => auth()->id(), 'book_id' => $book->id],
+            ['current_page' => 1]
         );
 
         return view('student.reader', compact('book', 'progress'));
@@ -73,22 +73,16 @@ class StudentController extends Controller
 
     public function streamBook(Book $book)
     {
-        $disk = Storage::disk('google');
+        $disk = Storage::disk('public');
 
-        if (!$disk->exists($book->google_drive_id)) {
-            return response()->json(['error' => 'The PDF file could not be found in Google Drive. Please re-upload the book.'], 404);
+        if (! $disk->exists($book->google_drive_id)) {
+            return response()->json(['error' => 'The PDF file could not be found in local storage. Please re-upload the book.'], 404);
         }
 
-        // Return a streamed response for better performance and security
-        return response()->stream(function () use ($disk, $book) {
-            $stream = $disk->readStream($book->google_drive_id);
-            fpassthru($stream);
-            if (is_resource($stream)) {
-                fclose($stream);
-            }
-        }, 200, [
+        return response()->file($disk->path($book->google_drive_id), [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . addslashes($book->title) . '.pdf"',
+            'Content-Disposition' => 'inline; filename="'.addslashes($book->title).'.pdf"',
+            'Cache-Control' => 'private, max-age=3600, must-revalidate',
         ]);
     }
 
@@ -107,7 +101,7 @@ class StudentController extends Controller
             'current_page' => $currentPage,
             'percentage' => $percentage,
             'is_completed' => $isCompleted,
-            'completed_at' => $isCompleted ? now() : $progress->completed_at
+            'completed_at' => $isCompleted ? now() : $progress->completed_at,
         ]);
 
         return response()->json(['success' => true]);

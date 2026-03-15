@@ -141,11 +141,19 @@
                 <!-- Canvases will be injected here -->
             </div>
 
+            <div id="reader-error" class="hidden max-w-xl mx-auto mt-8 bg-red-50 border border-red-200 text-red-700 rounded-2xl p-5 text-center">
+                <p class="font-semibold">The book is taking too long to load.</p>
+                <p class="text-sm mt-1">Your connection may be slow. Retry and the reader will continue loading pages in smaller steps.</p>
+                <button id="retry-load" class="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+                    Retry
+                </button>
+            </div>
+
             <!-- Loading Spinner -->
             <div id="loading" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50">
                 <div class="flex flex-col items-center">
                     <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mb-4"></div>
-                    <p class="text-blue-600 font-bold animate-pulse">Loading Book...</p>
+                    <p id="loading-text" class="text-blue-600 font-bold animate-pulse">Loading first page...</p>
                 </div>
             </div>
         </main>
@@ -160,7 +168,12 @@
 
         let pdfDoc = null;
         let lastPingedPage = initialPage;
+        let isLoadingRemainingPages = false;
         const scale = window.innerWidth < 768 ? 1.0 : 1.5;
+        const loadingOverlay = document.getElementById('loading');
+        const loadingText = document.getElementById('loading-text');
+        const readerError = document.getElementById('reader-error');
+        const pagesWrapper = document.getElementById('pages-wrapper');
 
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 
@@ -407,6 +420,18 @@
         toggleBtn.addEventListener('click', toggleNightMode);
 
         // Render Page Function
+        function insertCanvasInOrder(canvas, pageNumber) {
+            const nextCanvas = Array.from(pagesWrapper.querySelectorAll('canvas'))
+                .find(existingCanvas => parseInt(existingCanvas.dataset.page) > pageNumber);
+
+            if (nextCanvas) {
+                pagesWrapper.insertBefore(canvas, nextCanvas);
+                return;
+            }
+
+            pagesWrapper.appendChild(canvas);
+        }
+
         async function renderPage(num) {
             const page = await pdfDoc.getPage(num);
             const viewport = page.getViewport({ scale });
@@ -418,7 +443,7 @@
             canvas.width = viewport.width;
             canvas.dataset.page = num;
 
-            document.getElementById('pages-wrapper').appendChild(canvas);
+            insertCanvasInOrder(canvas, num);
 
             const renderCtx = {
                 canvasContext: canvas.getContext('2d'),
@@ -453,37 +478,87 @@
             }
         }
 
-        // Load Document
-        async function init() {
-            try {
-                pdfDoc = await pdfjsLib.getDocument(url).promise;
-                document.getElementById('page-count').textContent = pdfDoc.numPages;
+        async function renderPageWithRetry(pageNumber, attempts = 3) {
+            for (let attempt = 1; attempt <= attempts; attempt++) {
+                try {
+                    return await renderPage(pageNumber);
+                } catch (error) {
+                    if (attempt === attempts) {
+                        throw error;
+                    }
 
-                // Render all pages (lazy-ish or just sequentially)
-                for (let i = 1; i <= pdfDoc.numPages; i++) {
-                    const canvas = await renderPage(i);
-                    observer.observe(canvas);
+                    await new Promise(resolve => setTimeout(resolve, attempt * 1000));
                 }
-
-                document.getElementById('loading').classList.add('hidden');
-
-                // Scroll to initial page if not 1
-                if (initialPage > 1) {
-                    setTimeout(() => {
-                        const targetCanvas = document.getElementById(`page-${initialPage}`);
-                        if (targetCanvas) targetCanvas.scrollIntoView();
-                    }, 500);
-                }
-
-            } catch (err) {
-                console.error('PDF Init Error:', err);
-                let message = 'Oops! We couldn\'t load the PDF. Check your internet connection.';
-                if (err.response && err.response.data && err.response.data.error) {
-                    message = err.response.data.error;
-                }
-                alert(message);
             }
         }
+
+        async function loadRemainingPages() {
+            if (isLoadingRemainingPages) {
+                return;
+            }
+
+            isLoadingRemainingPages = true;
+            loadingText.textContent = 'Loading remaining pages...';
+
+            for (let pageNumber = 1; pageNumber <= pdfDoc.numPages; pageNumber++) {
+                if (document.getElementById(`page-${pageNumber}`)) {
+                    continue;
+                }
+
+                const canvas = await renderPageWithRetry(pageNumber);
+                observer.observe(canvas);
+
+                if (pageNumber % 2 === 0) {
+                    await new Promise(resolve => setTimeout(resolve, 150));
+                }
+            }
+        }
+
+        async function init() {
+            try {
+                readerError.classList.add('hidden');
+                pagesWrapper.innerHTML = '';
+                loadingOverlay.classList.remove('hidden');
+                loadingText.textContent = 'Loading first page...';
+
+                pdfDoc = await pdfjsLib.getDocument({
+                    url,
+                    disableAutoFetch: true,
+                    disableStream: false,
+                    disableRange: false,
+                    rangeChunkSize: 256 * 1024
+                }).promise;
+                document.getElementById('page-count').textContent = pdfDoc.numPages;
+
+                const firstCanvas = await renderPageWithRetry(initialPage);
+                observer.observe(firstCanvas);
+
+                loadingOverlay.classList.add('hidden');
+
+                if (initialPage > 1) {
+                    setTimeout(() => {
+                        firstCanvas.scrollIntoView();
+                    }, 250);
+                }
+
+                window.setTimeout(() => {
+                    loadRemainingPages().catch(handleLoadError);
+                }, 100);
+            } catch (err) {
+                handleLoadError(err);
+            }
+        }
+
+        function handleLoadError(err) {
+            console.error('PDF Init Error:', err);
+            loadingOverlay.classList.add('hidden');
+            readerError.classList.remove('hidden');
+        }
+
+        document.getElementById('retry-load').addEventListener('click', () => {
+            isLoadingRemainingPages = false;
+            init();
+        });
 
         init();
     </script>

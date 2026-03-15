@@ -96,7 +96,7 @@
                                                 Read
                                             </a>
                                             <form action="{{ route('books.destroy', $book->id) }}" method="POST"
-                                                onsubmit="return confirm('Are you sure you want to delete this book? This will also remove the file from Google Drive.');"
+                                                onsubmit="return confirm('Are you sure you want to delete this book? This will also remove the locally stored files.');"
                                                 class="flex-1">
                                                 @csrf
                                                 @method('DELETE')
@@ -116,8 +116,7 @@
                 <!-- Sidebar Sections -->
                 <div class="space-y-6" x-data="{ 
                     showAllStudents: false, 
-                    showStudentProgress: true, 
-                    showAddBooks: false 
+                    showStudentProgress: true 
                 }">
                     <!-- Student Progress (Assigned Books) -->
                     <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden h-fit">
@@ -190,18 +189,17 @@
                         </div>
                     </div>
 
-                    <!-- Add More Books Section -->
-                    <div class="bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 h-fit overflow-hidden">
-                        <button @click="showAddBooks = !showAddBooks" class="w-full flex items-center justify-between p-6 focus:outline-none">
-                            <h3 class="text-lg font-bold text-gray-800 text-left">Add More Books</h3>
-                            <svg class="w-5 h-5 text-gray-400 transition-transform duration-200" :class="{'rotate-180': showAddBooks}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-
-                        <div x-show="showAddBooks" x-collapse x-cloak class="px-6 pb-6">
-                            <p class="text-gray-500 text-xs mb-6">Want to expand the library? You can upload new PDFs here.</p>
-                            @include('teacher.upload')
+                    <div class="overflow-hidden rounded-3xl border border-blue-100 bg-gradient-to-br from-blue-600 via-blue-700 to-slate-900 text-white shadow-sm">
+                        <div class="p-6">
+                            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-blue-200">Library Intake</p>
+                            <h3 class="mt-2 text-2xl font-black tracking-tight">Add a new book to the Library</h3>
+                            <p class="mt-3 text-sm leading-6 text-blue-100">
+                                Open the dedicated upload page for a cleaner form, clearer errors, and a better mobile experience.
+                            </p>
+                            <a href="{{ route('books.create') }}"
+                                class="mt-6 inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-bold text-blue-700 transition hover:bg-blue-50">
+                                Go to Add Book
+                            </a>
                         </div>
                     </div>
                 </div>

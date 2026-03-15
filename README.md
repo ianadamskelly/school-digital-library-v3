@@ -1,72 +1,143 @@
-# School Digital Library - V3
+# School Digital Library V3
 
-A modern, web-based digital library management system designed for schools. This application allows teachers to upload and manage educational resources, while providing students with an intuitive interface to explore and read books.
+A Laravel 12 application for managing a school digital library. Teachers can upload and organize books, recommend them to students, and monitor reading progress. Students can browse books, open them in a browser-based PDF reader, and continue from where they stopped.
 
-## 🌟 Key Features
+## Features
 
-### For Teachers
-- **Easy Book Management**: Upload PDF books directly to Google Drive storage.
-- **Categorization**: Organize books into categories like Story Books, Textbooks, Reference Books, and more.
-- **Grade Tagging**: Assign books to multiple grade levels (from Play Group to Grade 12).
-- **Student Recommendations**: Personalized book recommendations for specific students with custom notes.
-- **Progress Tracking**: Monitor student reading activity and completion rates.
+### Teachers
+- Upload PDF books and optional cover images to local storage
+- Add books from a dedicated `Add Book` page
+- Organize books by category and assign them to one or more grade groups
+- Recommend books to students with optional notes
+- Track assigned-student reading progress from the dashboard
 
-### For Students
-- **Digital Reader**: Read PDF books directly in the browser with a sleek, responsive reader.
-- **Advanced Filtering**: Quickly find books by searching titles/authors or filtering by category and grade level.
-- **Personalized Dashboard**: See your reading progress, teacher picks, and books you're currently reading.
-- **Reading Progress**: Automatically saves your place—pick up exactly where you left off.
+### Students
+- Browse books filtered by title, author, category, and grade group
+- Read books in an in-browser PDF reader
+- Resume reading from saved progress
+- View recommendations from teachers
 
-## 🛠 Tech Stack
-- **Framework**: [Laravel 12+](https://laravel.com)
-- **Frontend**: [Tailwind CSS](https://tailwindcss.com), [Alpine.js](https://alpinejs.dev)
-- **Database**: MySQL/MariaDB
-- **Storage**: [Google Drive API](https://developers.google.com/drive) (via Flysystem)
-- **PDF Processing**: [Smalot PDF Parser](https://github.com/smalot/pdfparser)
+### Reader and upload improvements
+- Books and cover images are stored locally on the Laravel `public` disk
+- The PDF reader loads the first page first, then fetches remaining pages in smaller steps for slower connections
+- Upload validation errors are shown clearly on the dedicated add-book page
 
-## 🚀 Getting Started
+## Current grade groups
 
-### Prerequisites
+- Pre-School
+- Play Group
+- Kindergarten
+- Lower Primary
+- Upper Primary
+- Junior Secondary
+- High School
+- College
+- University
+- Adult Learning
+- Other
+
+## Example categories
+
+- Story Books
+- Textbooks
+- Reference Books
+- Picture Books
+- Early Readers
+- Children Fiction
+- Young Adult
+- Science & Nature
+- History & Culture
+- Mathematics
+- Languages
+- Comics
+- Poems
+- Plays
+- Revision Material
+- Life Skills
+- Religion & Values
+- Other
+
+## Tech stack
+
+- Laravel 12
+- PHP 8.2+
+- Tailwind CSS
+- Alpine.js
+- MySQL / MariaDB
+- Smalot PDF Parser
+
+## Setup
+
+### Requirements
+
 - PHP 8.2 or higher
 - Composer
-- Node.js & NPM
-- Google Cloud Service Account (for Google Drive storage)
+- Node.js and npm
+- MySQL or MariaDB
 
 ### Installation
 
-1. **Clone the repository**
+1. Clone the repository
    ```bash
    git clone https://github.com/ianadamskelly/school-digital-library-v3.git
    cd school-digital-library-v3
    ```
 
-2. **Install dependencies**
+2. Install dependencies
    ```bash
    composer install
    npm install
    ```
 
-3. **Environment Setup**
+3. Create the environment file and app key
    ```bash
    cp .env.example .env
    php artisan key:generate
    ```
-   *Configure your database and Google Drive credentials in `.env`.*
 
-4. **Initialize Database**
+4. Configure `.env`
+   - Set your database credentials
+   - Set `APP_ENV=local` for development
+
+5. Run migrations and seed base data
    ```bash
    php artisan migrate --seed
    ```
 
-5. **Run Development Server**
+6. Link public storage
+   ```bash
+   php artisan storage:link
+   ```
+
+7. Start the app
    ```bash
    npm run dev
-   # In a separate terminal
    php artisan serve
    ```
 
-## 🔐 Security Note
-Important sensitive files like `service-account.json` and `.env` are excluded from version control to protect credentials. Ensure you provide your own Google Service Account credentials for full functionality.
+## Default seeded data
 
-## 📄 License
+The seeder creates:
+- Grade groups for early years through adult learning
+- Book categories used by the upload form
+- A sample teacher account:
+  - Email: `john@example.com`
+  - Password: `password`
+
+## Storage
+
+- Uploaded PDFs are stored in `storage/app/public/books/pdfs`
+- Cover images are stored in `storage/app/public/books/covers`
+- Public URLs are served through `public/storage`
+
+## Testing
+
+Run the test suite with:
+
+```bash
+php artisan test --compact
+```
+
+## License
+
 This project is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
